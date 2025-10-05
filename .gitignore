@@ -1,0 +1,33 @@
+# 環境変数（絶対にコミットしない）
+.env
+.env.local
+.env*.local
+*.env
+
+# Python
+scripts/.env
+scripts/venv/
+scripts/__pycache__/
+scripts/*.pyc
+scripts/logs/
+scripts/last_run.json
+
+# Next.js
+frontend/.next/
+frontend/node_modules/
+frontend/.env.local
+frontend/out/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/

@@ -1,0 +1,13 @@
+# Discord API
+discord.py==2.3.2
+
+# スクレイピング
+requests==2.31.0
+beautifulsoup4==4.12.2
+lxml==4.9.3
+
+# データベース
+supabase==2.10.0
+
+# 環境変数
+python-dotenv==1.0.0
