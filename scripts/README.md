@@ -15,18 +15,36 @@ Discordに投稿された料理レシピURLを自動収集・分類し、Supabas
 
 ## 🚀 セットアップ
 
-### 1. 仮想環境の作成
+### 前提条件
+
+- [pyenv](https://github.com/pyenv/pyenv) がインストールされていること
+- [uv](https://github.com/astral-sh/uv) がインストールされていること
+
+```bash
+# pyenvのインストール（未インストールの場合）
+curl https://pyenv.run | bash
+
+# uvのインストール（未インストールの場合）
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+### 1. Pythonバージョンの設定
 
 ```bash
 cd scripts
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
+
+# pyenvでPython 3.12.11をインストール（未インストールの場合）
+pyenv install 3.12.11
+
+# プロジェクトでPython 3.12.11を使用
+pyenv local 3.12.11
 ```
 
 ### 2. 依存関係のインストール
 
 ```bash
-pip install -r requirements.txt
+# uvで依存関係をインストール
+uv sync
 ```
 
 ### 3. 環境変数の設定
@@ -91,8 +109,7 @@ ANTHROPIC_API_KEY=sk-ant-xxxxx
 
 ```bash
 cd scripts
-source venv/bin/activate
-python collector.py
+uv run python collector.py
 ```
 
 ### 初回実行
@@ -112,13 +129,13 @@ python collector.py
 
 ```bash
 # Discord連携テスト
-python discord_client.py
+uv run python discord_client.py
 
 # スクレイピングテスト
-python scraper.py
+uv run python scraper.py
 
 # AI分類テスト
-python classifier.py
+uv run python classifier.py
 ```
 
 ---
@@ -131,7 +148,9 @@ scripts/
 ├── discord_client.py     # Discord連携
 ├── scraper.py            # スクレイピング処理
 ├── classifier.py         # AI分類処理
-├── requirements.txt      # Python依存関係
+├── pyproject.toml        # プロジェクト設定・依存関係（uv用）
+├── uv.lock               # 依存関係ロックファイル（uv自動生成）
+├── .python-version       # Pythonバージョン指定（pyenv用）
 ├── .env.example          # 環境変数テンプレート
 ├── .env                  # 環境変数（Git除外）
 ├── last_run.json         # 実行履歴（自動生成）

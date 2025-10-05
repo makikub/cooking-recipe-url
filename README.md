@@ -119,6 +119,8 @@ Discord → Pythonスクリプト → Supabase (PostgreSQL)
 
 - Node.js 18以上
 - Python 3.11以上
+- [pyenv](https://github.com/pyenv/pyenv) - Pythonバージョン管理
+- [uv](https://github.com/astral-sh/uv) - 高速なPythonパッケージマネージャー
 - Supabaseアカウント
 - Discord Developer アカウント
 - Claude Code（ローカルにインストール済み）
@@ -156,12 +158,12 @@ cd cooking-recipe-url
 ```bash
 cd scripts
 
-# 仮想環境作成
-python3 -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
+# Pythonバージョンの設定（pyenv）
+pyenv install 3.12.11  # 未インストールの場合
+pyenv local 3.12.11
 
-# 依存関係インストール
-pip install -r requirements.txt
+# 依存関係インストール（uv）
+uv sync
 
 # 環境変数設定
 cp .env.example .env
@@ -209,8 +211,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key_here
 
 ```bash
 cd scripts
-source venv/bin/activate
-python collector.py
+uv run python collector.py
 ```
 
 **実行内容：**
@@ -252,7 +253,9 @@ cooking-recipe-url/
 │   ├── discord_client.py         # Discord連携
 │   ├── scraper.py                # スクレイピング処理
 │   ├── classifier.py             # AI分類処理
-│   ├── requirements.txt          # Python依存関係
+│   ├── pyproject.toml            # プロジェクト設定・依存関係（uv用）
+│   ├── uv.lock                   # 依存関係ロックファイル（uv自動生成）
+│   ├── .python-version           # Pythonバージョン指定（pyenv用）
 │   ├── .env.example              # 環境変数テンプレート
 │   ├── .env                      # 環境変数（Git除外）
 │   ├── last_run.json             # 実行履歴（自動生成）
@@ -288,16 +291,15 @@ cooking-recipe-url/
 
 ```bash
 cd scripts
-source venv/bin/activate
 
 # Discord連携テスト
-python discord_client.py
+uv run python discord_client.py
 
 # スクレイピングテスト
-python scraper.py
+uv run python scraper.py
 
 # AI分類テスト
-python classifier.py
+uv run python classifier.py
 ```
 
 ### フロントエンドの開発
