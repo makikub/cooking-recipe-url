@@ -1,3 +1,5 @@
+![Header Image](docs/assets/header.png)
+
 # 🍳 料理レシピURL管理システム
 
 Discordに投稿された料理レシピURLを自動収集・分類し、見やすいWebサイトで閲覧できるシステム

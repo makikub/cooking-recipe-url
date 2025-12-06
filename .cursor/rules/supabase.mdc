@@ -1,0 +1,67 @@
+---
+description: Supabaseデータベース操作のルールとガイドライン
+globs: ["supabase/**/*.sql", "frontend/lib/supabase.ts", "scripts/**/*.py"]
+alwaysApply: false
+---
+
+# Supabase データベース操作ルール
+
+## データベース構造
+
+- **テーブル**: `recipes`テーブルにレシピ情報を保存
+- **スキーマ**: `supabase/schema.sql`で定義
+- **マイグレーション**: SQL Editorで直接実行
+
+## クエリ原則
+
+- フロントエンドでは読み取り専用のクエリのみ実行
+- 認証情報は`NEXT_PUBLIC_SUPABASE_ANON_KEY`を使用
+- Pythonスクリプトでは`SUPABASE_SERVICE_KEY`を使用（書き込み権限）
+
+## データ型
+
+- 日時は`timestamp with time zone`を使用
+- 配列は`text[]`型を使用（例: `ingredients`）
+- URLは`text`型で保存
+
+## クエリパターン
+
+### フロントエンド（TypeScript）
+
+```typescript
+// レシピ一覧取得（投稿日時の新しい順）
+const { data, error } = await supabase
+  .from('recipes')
+  .select('*')
+  .order('posted_at', { ascending: false })
+```
+
+### Pythonスクリプト
+
+```python
+# レシピ登録
+result = supabase.table('recipes').insert({
+    'url': url,
+    'title': title,
+    'description': description,
+    # ...
+}).execute()
+```
+
+## エラーハンドリング
+
+- クエリエラーは適切にキャッチして処理
+- エラーメッセージをログに記録
+- ユーザーには分かりやすいエラーメッセージを表示
+
+## パフォーマンス
+
+- 必要なカラムのみを`select()`で指定
+- 大量データの取得はページネーションを検討
+- インデックスを適切に設定
+
+## セキュリティ
+
+- Row Level Security (RLS) は必要に応じて設定
+- サービスキーは絶対にフロントエンドで使用しない
+- 環境変数で認証情報を管理

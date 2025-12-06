@@ -1,0 +1,57 @@
+---
+description: TypeScript/React/Next.js フロントエンドのコーディング規約とベストプラクティス
+globs: ["frontend/**/*.ts", "frontend/**/*.tsx"]
+alwaysApply: false
+---
+
+# TypeScript/React/Next.js コーディング規約
+
+## 基本原則
+
+- **TypeScript**: 型安全性を重視し、`any`の使用は避ける
+- **React**: 関数コンポーネントとHooksを使用
+- **Next.js 14**: App Routerを使用（`app/`ディレクトリ）
+- **Tailwind CSS**: インラインスタイリングにTailwindクラスを使用
+
+## 命名規則
+
+- **コンポーネント**: PascalCase（例: `RecipeCard.tsx`）
+- **関数・変数**: camelCase（例: `formatDate`, `recipeList`）
+- **型・インターフェース**: PascalCase（例: `RecipeCardProps`, `Recipe`）
+- **定数**: UPPER_SNAKE_CASE（例: `MAX_INGREDIENTS`）
+
+## コンポーネント設計
+
+- コンポーネントは`'use client'`ディレクティブを必要に応じて使用
+- Propsは型定義を必ず作成
+- デフォルトエクスポートを使用（`export default function ComponentName`）
+- 再利用可能なコンポーネントは`components/`ディレクトリに配置
+
+## スタイリング
+
+- Tailwind CSSのユーティリティクラスを使用
+- レスポンシブデザインを意識（モバイルファースト）
+- カスタムスタイルは`globals.css`に定義
+
+## データフェッチング
+
+- Supabaseクライアントは`lib/supabase.ts`からインポート
+- サーバーコンポーネントで可能な限りデータフェッチング
+- クライアントコンポーネントでは`useEffect`やSWRなどを使用
+
+## エラーハンドリング
+
+- 画像のエラー処理は`onError`ハンドラを使用
+- デフォルト画像（`/default-recipe.png`）をフォールバックとして使用
+- 外部リンクは`target="_blank"`と`rel="noopener noreferrer"`を必ず設定
+
+## パフォーマンス
+
+- Next.jsの`Image`コンポーネントを使用して画像を最適化
+- `line-clamp`を使用してテキストの長さを制限
+- 不要な再レンダリングを避ける
+
+## コメント
+
+- 複雑なロジックには日本語でコメントを記述
+- コンポーネントの目的は簡潔に説明
