@@ -1,0 +1,6 @@
+node_modules/
+.wrangler/
+.dev.vars
+migration.sql
+migration_clean.sql
+*.log

@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import type { Recipe } from '@/lib/supabase'
+import type { Recipe } from '@/lib/api'
 
 type RecipeCardProps = {
   recipe: Recipe

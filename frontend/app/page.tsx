@@ -1,25 +1,21 @@
-import { supabase } from '@/lib/supabase'
+import { getRecipes } from '@/lib/api'
 import RecipeList from '@/components/RecipeList'
-import type { Recipe } from '@/lib/supabase'
+import type { Recipe } from '@/lib/api'
 
+export const runtime = 'edge' // Cloudflare Pages用
 export const revalidate = 0 // 常に最新データを取得
 
-async function getRecipes(): Promise<Recipe[]> {
-  const { data, error } = await supabase
-    .from('recipes')
-    .select('id, url, title, image_url, description, ingredients, cuisine_type, category, posted_at, created_at, updated_at')
-    .order('posted_at', { ascending: false })
-
-  if (error) {
+async function fetchRecipes(): Promise<Recipe[]> {
+  try {
+    return await getRecipes()
+  } catch (error) {
     console.error('Error fetching recipes:', error)
     return []
   }
-
-  return data || []
 }
 
 export default async function Home() {
-  const recipes = await getRecipes()
+  const recipes = await fetchRecipes()
 
   return (
     <main className="min-h-screen bg-gray-50">

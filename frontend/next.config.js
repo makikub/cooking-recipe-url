@@ -7,6 +7,8 @@ const nextConfig = {
         hostname: '**',
       },
     ],
+    // Cloudflare Pagesでは画像最適化が利用できないため無効化
+    unoptimized: true,
   },
 }
 

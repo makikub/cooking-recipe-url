@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import RecipeCard from './RecipeCard'
-import type { Recipe } from '@/lib/supabase'
+import type { Recipe } from '@/lib/api'
 
 type RecipeListProps = {
   recipes: Recipe[]

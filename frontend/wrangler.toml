@@ -1,0 +1,6 @@
+name = "cooking-recipe-frontend"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+NEXT_PUBLIC_API_URL = "https://recipe-collector.masaki-apple-dev827.workers.dev"

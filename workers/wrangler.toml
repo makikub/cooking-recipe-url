@@ -1,0 +1,28 @@
+name = "recipe-collector"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# D1データベース
+[[d1_databases]]
+binding = "DB"
+database_name = "recipe-db"
+database_id = "95b1b4cd-199e-4593-8d17-b0cc256e4aac"
+
+# KV (最終取得時刻の保存用)
+[[kv_namespaces]]
+binding = "KV"
+id = "2462162a131b4974a3a99ab1fbcb123a"
+
+# Cronトリガー (毎時0分に実行)
+[triggers]
+crons = ["0 * * * *"]
+
+# 環境変数 (機密情報は wrangler secret put で設定)
+[vars]
+ENVIRONMENT = "production"
+
+# Secrets (wrangler secret put で設定):
+# - DISCORD_TOKEN
+# - DISCORD_CHANNEL_ID
+# - OPENAI_API_KEY

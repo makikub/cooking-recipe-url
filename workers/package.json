@@ -1,0 +1,26 @@
+{
+  "name": "recipe-collector-workers",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "d1:create": "wrangler d1 create recipe-db",
+    "d1:migrate": "wrangler d1 execute recipe-db --file=./schema.sql",
+    "d1:migrate:local": "wrangler d1 execute recipe-db --file=./schema.sql --local",
+    "kv:create": "wrangler kv:namespace create RECIPE_KV",
+    "typecheck": "tsc --noEmit",
+    "migrate:from-supabase": "npx ts-node --project scripts/tsconfig.json scripts/migrate-from-supabase.ts"
+  },
+  "dependencies": {
+    "openai": "^4.77.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241218.0",
+    "@supabase/supabase-js": "^2.45.0",
+    "@types/node": "^20",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2",
+    "wrangler": "^3.99.0"
+  }
+}
