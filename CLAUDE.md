@@ -11,7 +11,7 @@ Discordに投稿された料理レシピURLを自動収集・分類し、Webサ�
 - バックエンド: Cloudflare Workers (TypeScript)
 - データベース: Cloudflare D1 (SQLite)
 - AI分類: OpenAI GPT 5.2
-- Discord連携: REST API + Cron Triggers（毎時実行）
+- Discord連携: REST API + Cron Triggers（毎日9:00 JST実行）
 
 ## よく使うコマンド
 
@@ -56,7 +56,7 @@ npm run pages:deploy
 ## アーキテクチャ
 
 ```
-Discord Channel → Cron Trigger (毎時) → Workers → D1
+Discord Channel → Cron Trigger (毎日) → Workers → D1
                                               ↑
                                          OpenAI GPT
                                               ↓

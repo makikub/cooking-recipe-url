@@ -14,7 +14,7 @@ Discordに投稿された料理レシピURLを自動収集・分類し、見や�
 
 このシステムは、Discordの特定チャンネルに投稿された料理レシピURLを自動的に収集し、以下の処理を行います：
 
-1. **自動収集**: Cron Triggerで毎時Discord REST APIからメッセージを取得
+1. **自動収集**: Cron Triggerで毎日Discord REST APIからメッセージを取得
 2. **スクレイピング**: URLからタイトル、画像、説明文を抽出
 3. **AI分類**: OpenAI GPT 5.2で素材・ジャンル・カテゴリを自動分類
 4. **データベース保存**: Cloudflare D1に保存
@@ -49,7 +49,7 @@ Cron Trigger (毎時) → Cloudflare Workers → Cloudflare D1
 
 ### データ収集（Cloudflare Workers）
 
-- Cron Triggerで毎時自動実行
+- Cron Triggerで毎日自動実行（日本時間9:00）
 - Discord REST APIでメッセージ取得
 - OGPスクレイピング
 - OpenAI GPTによる自動分類

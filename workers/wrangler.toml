@@ -14,9 +14,9 @@ database_id = "95b1b4cd-199e-4593-8d17-b0cc256e4aac"
 binding = "KV"
 id = "2462162a131b4974a3a99ab1fbcb123a"
 
-# Cronトリガー (毎時0分に実行)
+# Cronトリガー (毎日0:00 UTCに実行 = 日本時間9:00)
 [triggers]
-crons = ["0 * * * *"]
+crons = ["0 0 * * *"]
 
 # 環境変数 (機密情報は wrangler secret put で設定)
 [vars]
