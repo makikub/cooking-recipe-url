@@ -10,8 +10,9 @@ alwaysApply: false
 
 - **TypeScript**: 型安全性を重視し、`any`の使用は避ける
 - **React**: 関数コンポーネントとHooksを使用
-- **Next.js 14**: App Routerを使用（`app/`ディレクトリ）
+- **Next.js 15**: App Routerを使用（`app/`ディレクトリ）
 - **Tailwind CSS**: インラインスタイリングにTailwindクラスを使用
+- **Cloudflare Pages**: Edge Runtimeが必須
 
 ## 命名規則
 
@@ -27,6 +28,12 @@ alwaysApply: false
 - デフォルトエクスポートを使用（`export default function ComponentName`）
 - 再利用可能なコンポーネントは`components/`ディレクトリに配置
 
+## Cloudflare Pages対応
+
+- ページコンポーネントには`export const runtime = 'edge'`を追加
+- `nodejs_compat`フラグはCloudflare Dashboardで設定
+- `next/image`は`unoptimized: true`設定が必要
+
 ## スタイリング
 
 - Tailwind CSSのユーティリティクラスを使用
@@ -35,7 +42,8 @@ alwaysApply: false
 
 ## データフェッチング
 
-- Supabaseクライアントは`lib/supabase.ts`からインポート
+- Workers APIクライアントは`lib/api.ts`からインポート
+- `ingredients`はJSON文字列で保存されているため、`JSON.parse()`でパース
 - サーバーコンポーネントで可能な限りデータフェッチング
 - クライアントコンポーネントでは`useEffect`やSWRなどを使用
 

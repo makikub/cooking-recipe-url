@@ -12,16 +12,18 @@ alwaysApply: true
 
 ## アーキテクチャ
 
-- **フロントエンド**: Next.js 14 (App Router) + TypeScript + Tailwind CSS
-- **バックエンド**: Python スクリプト（ローカル実行）
-- **データベース**: Supabase (PostgreSQL)
-- **デプロイ**: Vercel（フロントエンド）
+- **フロントエンド**: Next.js 15 (App Router) + TypeScript + Tailwind CSS
+- **ホスティング**: Cloudflare Pages
+- **バックエンド**: Cloudflare Workers (TypeScript)
+- **データベース**: Cloudflare D1 (SQLite)
+- **KVストア**: Cloudflare KV（実行履歴管理）
+- **AI分類**: OpenAI GPT 5.2
+- **Discord連携**: REST API + Cron Triggers
 
 ## ディレクトリ構造
 
-- `frontend/`: Next.jsアプリケーション
-- `scripts/`: Pythonデータ収集スクリプト
-- `supabase/`: データベーススキーマとドキュメント
+- `workers/`: Cloudflare Workers（バックエンドAPI + Cronジョブ）
+- `frontend/`: Next.jsアプリケーション（Cloudflare Pages）
 - `docs/`: プロジェクトドキュメント
 
 ## コーディング規約
@@ -32,32 +34,15 @@ alwaysApply: true
 
 ## セキュリティ
 
-- 環境変数は`.env`ファイルに保存し、Gitにコミットしない
-- `.env.example`ファイルで必要な環境変数を明示
-- APIキーやトークンは環境変数で管理
-
-## エラーハンドリング
-
-- ユーザーに分かりやすいエラーメッセージを表示
-- ログに詳細なエラー情報を記録
-- 適切なフォールバック処理を実装
+- 環境変数は`wrangler secret put`で設定（Workers）
+- `.env`ファイルはGitにコミットしない
+- APIキーやトークンはシークレットで管理
 
 ## パフォーマンス
 
+- Cloudflare Workers CPU制限を意識（無料プラン10ms/リクエスト）
 - 不要な再レンダリングを避ける
 - 画像の最適化を実施
-- データベースクエリの最適化
-
-## テスト
-
-- 各モジュールは個別にテスト可能な構造にする
-- テストコードは将来追加予定
-
-## ドキュメント
-
-- README.mdを最新に保つ
-- 各ディレクトリにREADME.mdを配置
-- 複雑な処理にはコメントを記述
 
 ## Git運用
 
@@ -68,23 +53,21 @@ alwaysApply: true
 ## 依存関係
 
 - フロントエンド: `npm`で管理（`package.json`）
-- Python: `uv`で管理（`pyproject.toml`）
+- Workers: `npm`で管理（`package.json`）
 - 依存関係の更新は慎重に行う
 
 ## 環境変数
 
-### フロントエンド（`.env.local`）
-- `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-
-### Pythonスクリプト（`.env`）
+### Workers（wrangler secret put）
 - `DISCORD_TOKEN`
 - `DISCORD_CHANNEL_ID`
-- `SUPABASE_URL`
-- `SUPABASE_SERVICE_KEY`
+- `OPENAI_API_KEY`
+
+### Pages（Cloudflare Dashboard または wrangler.toml）
+- `NEXT_PUBLIC_API_URL`
 
 ## デプロイ
 
-- フロントエンドはVercelに自動デプロイ
-- 環境変数はVercel Dashboardで設定
-- Pythonスクリプトはローカルで月1回手動実行
+- Workers: `wrangler deploy`
+- Pages: `npm run pages:deploy`
+- Pagesの`nodejs_compat`フラグはDashboardで設定

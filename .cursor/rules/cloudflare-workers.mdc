@@ -1,0 +1,91 @@
+---
+description: Cloudflare Workers バックエンドのコーディング規約とベストプラクティス
+globs: ["workers/**/*.ts"]
+alwaysApply: false
+---
+
+# Cloudflare Workers コーディング規約
+
+## 基本原則
+
+- **TypeScript**: 型安全性を重視し、`any`の使用は避ける
+- **Wrangler**: Cloudflare公式CLIを使用
+- **D1**: SQLiteベースのデータベース
+- **KV**: キーバリューストア（メタデータ管理）
+
+## 命名規則
+
+- **関数・変数**: camelCase（例: `fetchDiscordMessages`, `recipeList`）
+- **クラス**: PascalCase（例: `RecipeRepository`）
+- **型・インターフェース**: PascalCase（例: `Env`, `Recipe`, `NewRecipe`）
+- **定数**: UPPER_SNAKE_CASE（例: `KV_METADATA_KEY`）
+
+## ディレクトリ構造
+
+```
+workers/src/
+├── index.ts           # エントリーポイント（fetch + scheduled）
+├── services/          # 外部サービス連携
+│   ├── discord.ts     # Discord REST API
+│   ├── scraper.ts     # OGPスクレイピング
+│   └── classifier.ts  # OpenAI GPT分類
+├── repositories/      # データアクセス層
+│   └── recipe.ts      # D1操作
+└── types/
+    └── index.ts       # 型定義
+```
+
+## D1データベース
+
+- 配列型は使用不可 → JSON文字列で保存
+- `ingredients`は`JSON.stringify()`で保存、`JSON.parse()`で取得
+- UUIDは`crypto.randomUUID()`で生成
+- 日時はISO8601文字列で保存
+
+## 環境変数とシークレット
+
+- `wrangler.toml`の`[vars]`には非機密情報のみ
+- 機密情報は`wrangler secret put`で設定:
+  - `DISCORD_TOKEN`
+  - `DISCORD_CHANNEL_ID`
+  - `OPENAI_API_KEY`
+
+## APIエンドポイント設計
+
+- CORSヘッダーを必ず設定
+- エラーレスポンスはJSON形式で返す
+- HTTPステータスコードを適切に使用
+
+## Cronトリガー
+
+- `wrangler.toml`の`[triggers]`で設定
+- `scheduled`ハンドラで処理を実装
+- `ctx.waitUntil()`で非同期処理を完了まで待機
+
+## エラーハンドリング
+
+- try-catchで適切にエラーをキャッチ
+- `console.error()`でログ出力
+- エラー時もJSONレスポンスを返す
+
+## パフォーマンス
+
+- Workers CPU制限を意識（無料プラン10ms/リクエスト）
+- 1URLずつ順次処理
+- 重複チェックを先に実行して無駄な処理を避ける
+
+## テスト
+
+- `wrangler dev`でローカルテスト
+- `--local`フラグでローカルD1を使用
+
+## デプロイ
+
+```bash
+wrangler deploy
+```
+
+## コメント
+
+- 複雑なロジックには日本語でコメントを記述
+- 関数の目的は簡潔に説明
